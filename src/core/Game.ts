@@ -139,15 +139,16 @@ export class Game {
       this.spatial,
       (_consumer, target) => {
         if (!target.active) return;
-        target.active = false;
 
         if (target.kind === 'player') {
           if (this.spawnGraceLeft > 0) return;
+          target.active = false;
           this.alive = false;
           this.gameOver.show(this.player.mass + this.timeAlive * 3);
           return;
         }
 
+        target.active = false;
         const idx = this.aiCells.indexOf(target);
         if (idx >= 0) {
           this.aiPool.release(target);
