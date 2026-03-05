@@ -8,7 +8,7 @@ export class HUD {
   }
 
   update(mass: number, timeAlive: number, score: number, grace: number): void {
-    const graceText = grace > 0 ? `<br/>Shield: ${grace.toFixed(1)}s` : '';
-    this.root.innerHTML = `Mass: ${mass.toFixed(1)}<br/>Time: ${timeAlive.toFixed(1)}s<br/>Score: ${score.toFixed(0)}${graceText}`;
+    const graceText = grace > 0 ? `<br/>Spawn Shield: ${grace.toFixed(1)}s` : '';
+    this.root.innerHTML = `Cell Mass: ${mass.toFixed(1)}<br/>Survival: ${timeAlive.toFixed(1)}s<br/>Score: ${score.toFixed(0)}${graceText}`;
   }
 }

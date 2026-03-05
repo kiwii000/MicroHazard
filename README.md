@@ -1,6 +1,6 @@
-# MicroHazard
+# MicroHazard Base
 
-MicroHazard is a browser-based, single-player agar-like prototype built with **Vite + TypeScript + Canvas2D**.
+A clean single-player agar-like browser base built with Vite + TypeScript + Canvas2D.
 
 ## Run
 
@@ -9,48 +9,22 @@ npm install
 npm run dev
 ```
 
-Open the local URL printed by Vite.
+## Core loop
 
-## Controls
+- Control your cell with pointer drag (or WASD/arrow fallback).
+- Eat pellets and smaller **biohazard** cells to gain mass.
+- Avoid larger biohazards.
+- Infinite deterministic chunked world with seeded generation.
 
-- **Primary:** drag/touch pointer to steer toward pointer location.
-- **Fallback:** `WASD` or arrow keys.
-- **Restart:** `R` key or Game Over button.
-- **Spawn shield:** short protection bubble on restart so runs do not end immediately.
+## What this base includes
 
-## Gameplay
+- Deterministic procedural chunk generation (`ChunkGenerator`, `ChunkManager`)
+- Biomes that influence pellet and biohazard density
+- Current field drift affecting all cells
+- Shared movement motor for player + AI hazards
+- Consumption rules + mass decay
+- Object pooling and spatial hash for performance
 
-- Move, consume pellets and smaller AI cells, and avoid larger AI cells.
-- Early-game safety: heavier AI are prevented from spawning too close to you and a brief spawn grace prevents instant death.
-- Mass controls size and speed:
-  - `radius = sqrt(mass / PI) * radiusScale`
-  - `speed = baseSpeed / (1 + speedMassFactor * sqrt(mass))`
-- Soft mass decay runs continuously, clamped to `minMass`.
-- Infinite run via deterministic chunk generation.
+## Tuning
 
-## Tuning surface
-
-All important knobs are in:
-
-- `src/core/GameConfig.ts`
-
-Tune chunking, biome spawn curves, movement, AI behavior, currents, decay, and collision thresholds there.
-
-## Architecture / safe extension points
-
-- `src/core/Game.ts`: orchestration and game loop.
-- `src/world/ChunkManager.ts`: active chunk lifecycle and pooled spawning.
-- `src/world/ChunkGenerator.ts`: deterministic seeded content generation.
-- `src/world/CurrentField.ts`: deterministic world drift vector field.
-- `src/entities/ConsumptionSystem.ts`: ownership of consume rules.
-- `src/entities/MovementMotor.ts`: consistent physics for player + AI.
-
-### Add new mechanics safely
-
-Prefer plugging new systems into `Game.update` as independent modules:
-
-1. Read state (entities/world/input).
-2. Apply effects (mass, velocity, status flags).
-3. Keep deterministic dependencies seeded (`RNG.hash` + chunk coords or run seed).
-
-Examples: scent trails, ring shrink systems, hazards, blooms.
+Use `src/core/GameConfig.ts` to tune movement, growth, chunking, biome balance, spawn safety, and AI.

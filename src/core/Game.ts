@@ -176,6 +176,5 @@ export class Game {
       }
     }
 
-    if (this.input.consumeRestart()) this.restart();
   }
 }
